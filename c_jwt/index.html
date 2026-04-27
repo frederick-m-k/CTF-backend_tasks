@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Community - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #306998 0%, #ffd43b 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-card h2 {
+            color: #306998;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #306998;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #306998 0%, #ffd43b 100%);
+            border: none;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(48, 105, 152, 0.3);
+        }
+
+        .posts-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .posts-section h2 {
+            color: #306998;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .post-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #306998;
+        }
+
+        .post-card.private {
+            border-left-color: #ffd43b;
+            background: #fff9e6;
+        }
+
+        .post-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .post-author {
+            font-size: 0.7rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #4a5568;
+        }
+
+        .private-badge {
+            display: inline-block;
+            background: #ffd43b;
+            color: #306998;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        .user-info {
+            background: #edf2f7;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            border: none;
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c53030;
+        }
+
+        .flag-found {
+            background: linear-gradient(135deg, #ffd43b, #f59e0b);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2d3748;
+            color: #a0aec0;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: #ffd43b;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .nav ul {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .nav a:hover {
+            color: #764ba2;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2d3748;
+            color: #a0aec0;
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+
+        .footer-brand {
+            margin-top: 0.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .footer-logo-inline {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            background: white;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Python Learning Community - Posts</h1>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="https://farning.de" class="brand">
+                <img src="farning_logo.svg" alt="Farning Logo" class="brand-logo">
+                <span class="brand-text">Farning</span>
+            </a>
+
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="app">
+            <div id="login-view" style="display: block;">
+                <div class="login-card">
+                    <h2>Join the Community</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <input type="text" id="username" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="password" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="login-btn">Login</button>
+                    </form>
+                    <div class="token-info" style="margin-top: 1rem; padding: 0.75rem; background: #f7fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <p style="color: #4a5568; font-size: 0.7rem;">💡 New to Python? Join our community! Any username/password works.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="posts-view" style="display: none;">
+                <div class="user-info">
+                    <span>Logged in as: <strong id="current-user">-</strong></span>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+                
+                <div id="flag-container" style="display: none;" class="flag-found"></div>
+                
+                <div class="posts-section">
+                    <h2>Python Discussions</h2>
+                    <div id="posts-list">
+                        <div class="loading">Loading posts...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>@ 2026 - Python Learning Community</p>
+
+        <p class="footer-brand">
+            Developed by
+            <a href="https://farning.de" class="farning-link">
+                <img src="farning_logo.svg" alt="Farning Logo" class="footer-logo-inline">
+                Farning
+            </a>
+        </p>
+    </div>
+
+    <script>
+        const API_BASE = '';
+
+        const loginView = document.getElementById('login-view');
+        const postsView = document.getElementById('posts-view');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const postsList = document.getElementById('posts-list');
+        const currentUserSpan = document.getElementById('current-user');
+        const flagContainer = document.getElementById('flag-container');
+
+        function decodeJWT(token) {
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) return null;
+                const payload = JSON.parse(atob(parts[1]));
+                return payload;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('python_token');
+            if (token) {
+                const payload = decodeJWT(token);
+                if (payload && payload.username) {
+                    currentUserSpan.textContent = payload.username;
+                    showPosts(token);
+                    loginView.style.display = 'none';
+                    postsView.style.display = 'block';
+                } else {
+                    localStorage.removeItem('python_token');
+                    loginView.style.display = 'block';
+                    postsView.style.display = 'none';
+                }
+            } else {
+                loginView.style.display = 'block';
+                postsView.style.display = 'none';
+            }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/jwt/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('python_token', data.token);
+                    checkAuth();
+                } else {
+                    alert('Login failed');
+                }
+            } catch (err) {
+                alert('Connection error');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('python_token');
+            checkAuth();
+        });
+
+        async function showPosts(token) {
+            postsList.innerHTML = '<div class="loading">Loading discussions...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/jwt/posts`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    renderPosts(data.posts);
+                } else {
+                    postsList.innerHTML = `<div style="padding: 1rem; background: #fed7d7; border-radius: 8px; color: #9b2c2c;">Error: ${data.error}</div>`;
+                }
+            } catch (err) {
+                postsList.innerHTML = `<div style="padding: 1rem; background: #fed7d7; border-radius: 8px; color: #9b2c2c;">Connection error. Make sure the server is running.</div>`;
+            }
+        }
+
+        function renderPosts(posts) {
+            if (!posts || posts.length === 0) {
+                postsList.innerHTML = '<div class="loading">No posts yet. Be the first to share!</div>';
+                return;
+            }
+
+            postsList.innerHTML = '';
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post-card';
+                if (post.isPrivate) {
+                    postDiv.classList.add('private');
+                }
+                
+                postDiv.innerHTML = `
+                    <div class="post-title">
+                        ${post.title}
+                        ${post.isPrivate ? '<span class="private-badge">✨ Premium</span>' : ''}
+                    </div>
+                    <div class="post-author">by ${post.author}</div>
+                    <div class="post-content">${post.content}</div>
+                `;
+                postsList.appendChild(postDiv);
+            });
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>

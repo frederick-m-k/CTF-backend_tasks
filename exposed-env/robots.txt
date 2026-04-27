@@ -1,0 +1,15 @@
+# robots.txt for Security Challenge
+# This file tells search engines which pages to crawl
+# ===================================================
+
+# Allow crawling of main pages
+User-agent: *
+Allow: /
+
+# Disable crawling of sensitive directories
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /config/
+
+Allow: /.env

@@ -1,0 +1,15 @@
+# robots.txt for Security Challenge
+# ===================================================
+
+User-agent: *
+Allow: /
+
+# Disable crawling of sensitive directories
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /config/
+
+# The .git directory is located at: /.git/
+# It contains commit history and messages. Check the commit message for further information. The commit message is usually saved as COMMIT_EDITMSG.
+Disallow: /.git/

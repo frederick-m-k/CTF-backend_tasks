@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Francisco - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #2d49c3 0%, #7a95e8 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                        url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header p {
+            font-size: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            padding: 0.4rem;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 6px 18px rgba(45, 73, 195, 0.22);
+        }
+
+        .brand-text {
+            font-size: 1.05rem;
+        }
+
+        .nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .nav a:hover {
+            color: #764ba2;
+        }
+
+        .nav ul a:hover {
+            transform: translateY(-1px);
+        }
+
+        #farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        #farning-link:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .footer-logo-inline {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            padding: 0.2rem;
+            border-radius: 8px;
+            background: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Weather Section */
+        .weather-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .weather-item {
+            background: linear-gradient(135deg, #2d49c3 0%, #7a95e8 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        .weather-item h4 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .weather-item .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Fun Fact Section */
+        .fun-fact {
+            background: linear-gradient(135deg, #2d49c3 0%, #7a95e8 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .fun-fact:hover {
+            transform: scale(1.02);
+        }
+
+        .fact-text {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .nav {
+                padding: 0.8rem 1rem;
+            }
+
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .brand-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .weather-info {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>San Francisco</h1>
+        <p>City by the Bay 🌉</p>
+    </div>
+
+    <div class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="https://farning.de" aria-label="Farning website">
+                <img class="brand-logo" src="farning_logo.svg" alt="Farning logo">
+                <span class="brand-text">Farning</span>
+            </a>
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('attractions')">Attractions</a></li>
+                <li><a href="#" onclick="showSection('culture')">Culture</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Home Section -->
+        <div id="home">
+            <h2>Welcome to San Francisco!</h2>
+            <p>San Francisco is a vibrant metropolis on the West Coast of the United States. Known for its steep hills, the iconic Golden Gate Bridge, and liberal culture, the city attracts visitors from around the world.</p>
+
+            <!-- Weather Section -->
+            <div class="weather-section">
+                <h2>Current Weather</h2>
+                <div class="weather-info" id="weather"></div>
+            </div>
+
+            <!-- Fun Fact Section -->
+            <div class="fun-fact" onclick="showRandomFact()">
+                <h3>Fun Fact About San Francisco</h3>
+                <div class="fact-text" id="factDisplay">Click here for an interesting fact!</div>
+            </div>
+        </div>
+
+        <!-- Attractions Section -->
+        <div id="attractions" style="display: none;">
+            <h2>Top Attractions</h2>
+            <div class="cards">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400" alt="Golden Gate Bridge">
+                    <div class="card-content">
+                        <h3>🌉 Golden Gate Bridge</h3>
+                        <p>The iconic landmark of San Francisco. The bridge is 1.7 miles long and opened in 1937.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1516914589929-41f529d2d1e8?w=400" alt="Alcatraz">
+                    <div class="card-content">
+                        <h3>🏝️ Alcatraz</h3>
+                        <p>The famous prison island, now a museum and one of the most visited sites in the city.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=400" alt="Cable Car">
+                    <div class="card-content">
+                        <h3>🚃 Cable Cars</h3>
+                        <p>The historic streetcars are a must-ride for every visitor to San Francisco.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Culture Section -->
+        <div id="culture" style="display: none;">
+            <h2>Culture & Lifestyle</h2>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🍽️ Food Scene</h3>
+                        <p>Famous for sourdough bread, fresh seafood, and a diverse international cuisine scene.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🎨 Art & Music</h3>
+                        <p>Numerous museums, galleries, and the legendary Summer of Love heritage.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🌈 LGBTQ+ Culture</h3>
+                        <p>The Castro District is one of the first gay neighborhoods in the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🌉 San Francisco - The City that knows how 🌉</p>
+        <!-- flag{not_so_well_hidden} -->
+        <p class="footer-brand">
+            © 2026 - Developed by
+            <a id="farning-link" href="https://farning.de">
+                <img class="footer-logo-inline" src="farning_logo.svg" alt="Farning logo">
+                Farning
+            </a>
+        </p>
+    </div>
+
+    <script>
+        // Fun facts about San Francisco
+        const facts = [
+            "The Golden Gate Bridge was originally planned in a different color - it was supposed to be black and yellow stripes!",
+            "Alcatraz was the only federal prison with hot water showers - as a psychological tool for the inmates.",
+            "In San Francisco, it is illegal to sell goldfish in plastic bags.",
+            "The famous Cable Cars are the only moving National Historic Landmarks in the United States.",
+            "San Francisco has more than 50 hills - the highest is Mount Davidson at 925 feet (282 meters).",
+            "San Francisco's Chinatown is the oldest and one of the largest Chinatowns outside Asia.",
+            "The famous Boudin Bakery has been making sourdough bread since 1849.",
+            "Lombard Street is the 'crookedest street in the world' with 8 hairpin turns.",
+            "The city's fog has a name - it's called 'Karl the Fog' and even has its own Twitter account!",
+            "The Blue Bottle Coffee company started as a single coffee cart in Hayes Valley in 2002."
+        ];
+
+        // Weather data (simulated)
+        const weatherData = {
+            temperature: Math.floor(Math.random() * 15) + 10,
+            temperatureF: Math.floor(Math.random() * 27) + 50,
+            condition: ["Sunny", "Partly Cloudy", "Foggy", "Light Rain", "Windy"][Math.floor(Math.random() * 5)],
+            humidity: Math.floor(Math.random() * 40) + 40
+        };
+
+        // Display weather
+        function displayWeather() {
+            const weatherDiv = document.getElementById('weather');
+            weatherDiv.innerHTML = `
+                <div class="weather-item">
+                    <h4>Temperature</h4>
+                    <div class="value">${weatherData.temperature}°C / ${weatherData.temperatureF}°F</div>
+                </div>
+                <div class="weather-item">
+                    <h4>Conditions</h4>
+                    <div class="value">${weatherData.condition}</div>
+                </div>
+                <div class="weather-item">
+                    <h4>Humidity</h4>
+                    <div class="value">${weatherData.humidity}%</div>
+                </div>
+            `;
+        }
+
+        // Show random fact
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const factDisplay = document.getElementById('factDisplay');
+            factDisplay.style.opacity = '0';
+            setTimeout(() => {
+                factDisplay.textContent = facts[randomIndex];
+                factDisplay.style.opacity = '1';
+            }, 200);
+            factDisplay.style.transition = 'opacity 0.3s';
+        }
+
+        // Navigation between sections
+        function showSection(sectionId) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('attractions').style.display = 'none';
+            document.getElementById('culture').style.display = 'none';
+
+            document.getElementById(sectionId).style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Set greeting based on time of day
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "";
+            if (hour < 12) greeting = "Good Morning! 🌅";
+            else if (hour < 18) greeting = "Good Afternoon! 🌞";
+            else greeting = "Good Evening! 🌙";
+
+            const header = document.querySelector('.header p');
+            if (header) {
+                header.innerHTML = `${greeting} Welcome to San Francisco 🌉`;
+            }
+        }
+
+        // Update weather periodically
+        function updateWeather() {
+            weatherData.temperature = Math.floor(Math.random() * 15) + 10;
+            weatherData.temperatureF = Math.floor((weatherData.temperature * 9/5) + 32);
+            weatherData.condition = ["Sunny", "Partly Cloudy", "Foggy", "Light Rain", "Windy"][Math.floor(Math.random() * 5)];
+            weatherData.humidity = Math.floor(Math.random() * 40) + 40;
+            displayWeather();
+        }
+
+        // Initialize page
+        function init() {
+            displayWeather();
+            setGreeting();
+
+            setTimeout(() => {
+                showRandomFact();
+            }, 1000);
+        }
+
+        setInterval(updateWeather, 300000);
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

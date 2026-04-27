@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #e63946 0%, #f4a261 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header p {
+            font-size: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #e63946;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #f4a261;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            color: #e63946;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Weather Section */
+        .weather-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .weather-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .weather-item {
+            background: linear-gradient(135deg, #e63946 0%, #f4a261 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        .weather-item h4 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .weather-item .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Fun Fact Section */
+        .fun-fact {
+            background: linear-gradient(135deg, #e63946 0%, #f4a261 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .fun-fact:hover {
+            transform: scale(1.02);
+        }
+
+        .fact-text {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer { background: #333; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+
+        .footer-brand {
+            margin-top: 0.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .footer-logo-inline {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            background-color: white;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .nav ul {
+                gap: 1rem;
+            }
+            
+            .weather-info {
+                gap: 1rem;
+            }
+
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Tokyo</h1>
+        <p>The Dynamic Capital 🗼</p>
+    </div>
+
+    <div class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="https://farning.de">
+                <img class="brand-logo" src="farning_logo.svg" alt="Farning Logo">
+                <span class="brand-text">Farning</span>
+            </a>
+
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('attractions')">Attractions</a></li>
+                <li><a href="#" onclick="showSection('culture')">Culture</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Home Section -->
+        <div id="home">
+            <h2>Welcome to Tokyo!</h2>
+            <!-- flag{hidden_in_tokyo_tower} -->
+            <p>Tokyo, Japan's bustling capital, seamlessly blends ultramodern skyscrapers with traditional temples. With over 37 million people in the metropolitan area, it's the world's most populous metropolis, known for its cutting-edge technology, incredible food scene, and vibrant pop culture.</p>
+            
+            <!-- Weather Section -->
+            <div class="weather-section">
+                <h2>🌤️ Current Weather</h2>
+                <div class="weather-info" id="weather"></div>
+            </div>
+
+            <!-- Fun Fact Section -->
+            <div class="fun-fact" onclick="showRandomFact()">
+                <h3>🎲 Fun Fact About Tokyo</h3>
+                <div class="fact-text" id="factDisplay">Click here for an interesting fact!</div>
+            </div>
+        </div>
+
+        <!-- Attractions Section -->
+        <div id="attractions" style="display: none;">
+            <h2>Top Attractions</h2>
+            <div class="cards">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400" alt="Shibuya Crossing">
+                    <div class="card-content">
+                        <h3>🚦 Shibuya Crossing</h3>
+                        <p>The world's busiest pedestrian crossing, where thousands of people cross at once in a beautiful chaos.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=400" alt="Senso-ji Temple">
+                    <div class="card-content">
+                        <h3>🏯 Senso-ji Temple</h3>
+                        <p>Tokyo's oldest temple, dating back to 645 AD, located in the historic Asakusa district.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400" alt="Tokyo Tower">
+                    <div class="card-content">
+                        <h3>🗼 Tokyo Tower</h3>
+                        <p>An iconic communications and observation tower inspired by the Eiffel Tower.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Culture Section -->
+        <div id="culture" style="display: none;">
+            <h2>Culture & Lifestyle</h2>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🍣 World-Class Cuisine</h3>
+                        <p>Tokyo has more Michelin-starred restaurants than any other city in the world - over 200!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🎮 Pop Culture Capital</h3>
+                        <p>Home to Akihabara (electric town), anime culture, video games, and Harajuku street fashion.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>🌸 Seasonal Beauty</h3>
+                        <p>Famous for cherry blossom season (sakura) in spring and stunning autumn colors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+    <p>🗼 Tokyo - Where Tradition Meets Tomorrow 🌸</p>
+        <p class="footer-brand">
+            © 2026 - Developed by
+            <a class="farning-link" href="https://farning.de">
+                <img class="footer-logo-inline" src="farning_logo.svg" alt="Farning Logo">
+                Farning
+            </a>
+        </p>
+    </div>
+
+    <script>
+        // Fun facts about Tokyo
+        const facts = [
+            "Tokyo was originally a small fishing village called Edo before becoming the capital in 1868.",
+            "The Tokyo Metro system handles over 8 million passengers daily - more than the entire population of New York City!",
+            "Tokyo has the most Michelin-starred restaurants of any city in the world.",
+            "There are over 2,000 vending machines in Tokyo - selling everything from drinks to umbrellas to fresh eggs!",
+            "The city has more than 3,000 convenience stores (konbini) open 24/7.",
+            "Tokyo Disneyland is the most visited theme park in Japan, with over 16 million annual visitors.",
+            "The Tsukiji Fish Market was once the largest wholesale fish market in the world.",
+            "Tokyo has over 100 different festivals (matsuri) throughout the year.",
+            "The city hosted the Summer Olympics in 1964 and again in 2021.",
+            "Akihabara district is known as 'Electric Town' - the global center of anime and electronics culture.",
+            "Tokyo has the world's busiest train station (Shinjuku Station) with over 3.6 million passengers daily.",
+            "The Imperial Palace sits on the site where Edo Castle once stood, and is surrounded by ancient moats and walls."
+        ];
+
+        // Weather data (simulated)
+        const weatherData = {
+            temperature: Math.floor(Math.random() * 20) + 5, // 5-25°C
+            temperatureF: Math.floor(Math.random() * 36) + 41,
+            condition: ["Sunny", "Partly Cloudy", "Rainy", "Cherry Blossom Season", "Humid"][Math.floor(Math.random() * 5)],
+            humidity: Math.floor(Math.random() * 40) + 50 // 50-90%
+        };
+
+        // Display weather
+        function displayWeather() {
+            const weatherDiv = document.getElementById('weather');
+            weatherDiv.innerHTML = `
+                <div class="weather-item">
+                    <h4>Temperature</h4>
+                    <div class="value">${weatherData.temperature}°C / ${weatherData.temperatureF}°F</div>
+                </div>
+                <div class="weather-item">
+                    <h4>Conditions</h4>
+                    <div class="value">${weatherData.condition}</div>
+                </div>
+                <div class="weather-item">
+                    <h4>Humidity</h4>
+                    <div class="value">${weatherData.humidity}%</div>
+                </div>
+            `;
+        }
+
+        // Show random fact
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const factDisplay = document.getElementById('factDisplay');
+            factDisplay.style.opacity = '0';
+            setTimeout(() => {
+                factDisplay.textContent = facts[randomIndex];
+                factDisplay.style.opacity = '1';
+            }, 200);
+            factDisplay.style.transition = 'opacity 0.3s';
+        }
+
+        // Navigation between sections
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('attractions').style.display = 'none';
+            document.getElementById('culture').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Set greeting based on time of day
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "";
+            if (hour < 12) greeting = "Ohayō! Good Morning! 🌅";
+            else if (hour < 18) greeting = "Konnichiwa! Good Afternoon! 🌞";
+            else greeting = "Konbanwa! Good Evening! 🌙";
+            
+            const header = document.querySelector('.header p');
+            if (header) {
+                header.innerHTML = `${greeting} Welcome to Tokyo 🗼`;
+            }
+        }
+
+        // Update weather periodically
+        function updateWeather() {
+            weatherData.temperature = Math.floor(Math.random() * 20) + 5;
+            weatherData.temperatureF = Math.floor((weatherData.temperature * 9/5) + 32);
+            weatherData.condition = ["Sunny", "Partly Cloudy", "Rainy", "Cherry Blossom Season", "Humid"][Math.floor(Math.random() * 5)];
+            weatherData.humidity = Math.floor(Math.random() * 40) + 50;
+            displayWeather();
+        }
+
+        // Initialize page
+        function init() {
+            displayWeather();
+            setGreeting();
+            
+            // Show random fact on load
+            setTimeout(() => {
+                showRandomFact();
+            }, 1000);
+        }
+
+        // Update weather every 5 minutes
+        setInterval(updateWeather, 300000);
+
+        // Event listener for page load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

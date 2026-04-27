@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decryption - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #2d3748;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.16);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .encrypted-string {
+            background: #0a0a0f;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 1.5rem 0;
+            border: 2px solid #667eea;
+        }
+
+        .encrypted-string .label {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .encrypted-string .value {
+            font-family: monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fbbf24;
+            letter-spacing: 2px;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-box h3 {
+            color: #fbbf24;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box p {
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .info-box code {
+            background: #0a0a0f;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #4ade80;
+        }
+
+        .python-code {
+            background: #0a0a0f;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .python-code pre {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #4ade80;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .hint-box {
+            background: rgba(102, 126, 234, 0.2);
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .hint-box p {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 2rem;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #fbbf24;
+            text-decoration: none;
+        }
+
+        .input-group {
+            margin-top: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .nav ul {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .nav a:hover {
+            color: #764ba2;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2d3748;
+            color: #a0aec0;
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+
+        .footer-brand {
+            margin-top: 0.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .footer-logo-inline {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            background: white;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+        }
+
+        .encrypted-string {
+            background: #f7fafc;
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .encrypted-string summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: #2d49c3;
+        }
+
+        .encrypted-string .label {
+            font-size: 0.75rem;
+            color: #718096;
+            margin: 1rem 0 0.4rem;
+        }
+
+        .encrypted-string .value {
+            font-family: monospace;
+            font-size: 1rem;
+            color: #4a5568;
+            letter-spacing: 0.5px;
+            filter: blur(3px);
+            transition: filter 0.2s;
+        }
+
+        .encrypted-string[open] .value:hover {
+            filter: none;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-box h3 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .info-box code {
+            background: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #2d49c3;
+        }
+
+        .hint-box {
+            background: #f7fafc;
+            border-left: 4px solid #cbd5e1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ROT13 Decryption</h1>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="https://farning.de" class="brand">
+                <img src="farning_logo.svg" alt="Farning Logo" class="brand-logo">
+                <span class="brand-text">Farning</span>
+            </a>
+
+            <ul>
+                <li><a href="#challenge">Challenge</a></li>
+                <li><a href="#about">ROT13</a></li>
+                <li><a href="#hint">Hint</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="challenge-card" id="challenge">
+            <h2>Encrypted Message</h2>
+            <p>Your task is to decrypt the following message using ROT13:</p>
+            
+            <details class="encrypted-string">
+                <summary>Encrypted message anzeigen</summary>
+                <div class="label">ROT13 payload</div>
+                <div class="value">synt{S-E0G13-PE4PX3Q}</div>
+            </details>
+
+            <div class="info-box" id="about">
+                <h3>About ROT13</h3>
+                <p>
+                    ROT13 (Rotate by 13) is a simple letter substitution cipher that replaces a letter 
+                    with the 13th letter after it in the alphabet. It is a special case of the Caesar cipher.
+                </p>
+                <!-- <p>
+                    <strong>Important:</strong> ROT13 is its own inverse! Applying ROT13 twice returns the original text.
+                </p> -->
+            </div>
+
+            <div class="info-box">
+                <h3>How to Decrypt</h3>
+                <p>Either manually rotate each letter by 13 or use a website to decipher it.</p>
+            </div>
+
+            <div class="hint-box" id="hint">
+                <p>
+                    <strong>Hint:</strong> Numbers and symbols (like -, 0, 1, 3) are not affected by ROT13. 
+                    Only letters A-Z and a-z change. The decrypted message is the flag!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Deciphering</p>
+
+        <p class="footer-brand">
+            @2026 - Developed by
+            <a href="https://farning.de" class="farning-link">
+                <img src="farning_logo.svg" alt="Farning Logo" class="footer-logo-inline">
+                Farning
+            </a>
+        </p>
+    </div>
+</body>
+</html>

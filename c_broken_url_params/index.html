@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Learning Community - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: #333;
+
+            /* NEU */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #306998 0%, #ffd43b 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+
+            /* NEU */
+            flex: 1;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-card h2 {
+            color: #306998;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #306998;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #306998 0%, #ffd43b 100%);
+            border: none;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(48, 105, 152, 0.3);
+        }
+
+        .stats-link {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .stats-link a {
+            color: #306998;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .stats-link a:hover {
+            text-decoration: underline;
+        }
+
+        .dashboard {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            border: none;
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c53030;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .nav ul {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .nav a:hover {
+            color: #764ba2;
+        }
+
+        .footer-brand {
+            margin-top: 0.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .footer-logo-inline {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            background: white;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #306998;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            background: #edf2f7;
+        }
+
+        .content-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .content-card h3 {
+            margin-bottom: 1rem;
+            color: #306998;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-label {
+            color: #718096;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #306998;
+        }
+
+        .flag-container {
+            background: linear-gradient(135deg, #ffd43b, #f59e0b);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            color: #9b2c2c;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2d3748;
+            color: #a0aec0;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .info-note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #718096;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .url-display {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: #e6f7ff;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            text-align: center;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Python Learning Community - Statistics</h1>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="https://farning.de" class="brand">
+                <img src="farning_logo.svg" alt="Farning Logo" class="brand-logo">
+                <span class="brand-text">Farning</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="login-view" style="display: block;">
+            <div class="login-card">
+                <h2>Join the Community</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+                <div class="stats-link">
+                    <a id="stats-link-preview">View Community Statistics</a>
+                </div>
+                <div class="info-note">
+                    Any username and password works. Check the statistics page!
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-view" style="display: none;">
+            <div class="dashboard">
+                <div class="user-info">
+                    <span>Logged in as: <strong id="current-user">-</strong></span>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+                
+                <div class="nav-links">
+                    <a id="home-link">Home</a>
+                    <a id="stats-link-dashboard">Statistics</a>
+                </div>
+                
+                <div id="content-area">
+                    <div class="content-card">
+                        <h3>Recent Activity</h3>
+                        <p>Welcome to the Python Learning Community! Here you can discuss Python programming and share your learning journey.</p>
+                        <p style="margin-top: 1rem;">Check the Statistics page to see community insights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>@ 2026 - Share your Python journey</p>
+
+        <p class="footer-brand">
+            Developed by
+            <a href="https://farning.de" class="farning-link">
+                <img src="farning_logo.svg" alt="Farning Logo" class="footer-logo-inline">
+                Farning
+            </a>
+        </p>
+    </div>
+
+    <script>
+        const API_BASE = '';
+
+        function handleLogin(username) {
+            localStorage.setItem('python_user', username);
+            showDashboard(username);
+        }
+
+        function showDashboard(username) {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('current-user').textContent = username;
+            
+            // Check current URL to decide what to show
+            if (window.location.search.includes('is_authorized')) {
+                loadStatistics();
+            } else {
+                showHome();
+            }
+        }
+
+        function showHome() {
+            const contentArea = document.getElementById('content-area');
+            contentArea.innerHTML = `
+                <div class="content-card">
+                    <h3>Welcome to Your Dashboard</h3>
+                    <p>This is your personal dashboard where you can view community discussions and share your Python learning experiences.</p>
+                    <p style="margin-top: 1rem;">Visit the Statistics page to see community insights and analytics.</p>
+                    <p style="margin-top: 1rem; color: #306998;">Tip: The statistics page uses URL parameters to control access.</p>
+                </div>
+            `;
+        }
+
+        async function loadStatistics() {
+            const contentArea = document.getElementById('content-area');
+            contentArea.innerHTML = '<div class="loading">Loading statistics...</div>';
+            
+            const currentUrl = window.location.href;
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAuthorized = urlParams.get('is_authorized');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/statistics?is_authorized=${isAuthorized}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    contentArea.innerHTML = `
+                        <div class="flag-container">
+                            ACCESS GRANTED - ADMIN STATISTICS
+                        </div>
+                        <div class="content-card">
+                            <h3>Community Statistics</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Members:</span>
+                                <span class="stat-value">${data.data.totalMembers}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Posts:</span>
+                                <span class="stat-value">${data.data.totalPosts}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Active Today:</span>
+                                <span class="stat-value">${data.data.activeToday}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Flag:</span>
+                                <span class="stat-value">${data.data.flag}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Admin Note:</span>
+                                <span class="stat-value">Remember to secure your URL parameters</span>
+                            </div>
+                        </div>
+                        <div class="url-display">
+                            Current URL: ${currentUrl}
+                        </div>
+                    `;
+                } else {
+                    contentArea.innerHTML = `
+                        <div class="error-message">
+                            ${data.error}
+                        </div>
+                        <div class="content-card">
+                            <h3>Statistics Access Restricted</h3>
+                            <p>Community statistics are only available to authorized administrators.</p>
+                            <p style="margin-top: 1rem;">Check the URL to proceed.</p>
+                        </div>
+                    `;
+                }
+            } catch (err) {
+                contentArea.innerHTML = `
+                    <div class="error-message">
+                        Connection error. Make sure the server is running.
+                    </div>
+                `;
+            }
+        }
+
+        function goToStatistics() {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('is_authorized', 'false');
+            window.location.href = currentUrl.toString();
+        }
+
+        function goToHome() {
+            window.location.href = window.location.pathname;
+        }
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                handleLogin(username);
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('python_user');
+            window.location.href = window.location.pathname;
+        });
+
+        document.getElementById('home-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            goToHome();
+        });
+
+        document.getElementById('stats-link-dashboard').addEventListener('click', (e) => {
+            e.preventDefault();
+            goToStatistics();
+        });
+
+        document.getElementById('stats-link-preview').addEventListener('click', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                handleLogin(username);
+                goToStatistics();
+            } else {
+                alert('Please enter username and password first');
+            }
+        });
+
+
+        // Check if we're on the statistics page based on URL
+        if (window.location.search.includes('is_authorized')) {
+            const savedUser = localStorage.getItem('python_user');
+            if (savedUser) {
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('dashboard-view').style.display = 'block';
+                document.getElementById('current-user').textContent = savedUser;
+                loadStatistics();
+            } else {
+                // Show login but also show that we came from statistics
+                const statsLink = document.getElementById('stats-link-preview');
+                if (statsLink) {
+                    statsLink.style.fontWeight = 'bold';
+                }
+            }
+        } else {
+            const savedUser = localStorage.getItem('python_user');
+            if (savedUser) {
+                document.getElementById('login-view').style.display = 'none';
+                document.getElementById('dashboard-view').style.display = 'block';
+                document.getElementById('current-user').textContent = savedUser;
+                showHome();
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

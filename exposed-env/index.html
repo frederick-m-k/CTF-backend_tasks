@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment Configuration - Farning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .info-card code {
+            background: #edf2f7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #e53e3e;
+        }
+
+        .endpoint-list {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .endpoint {
+            font-family: monospace;
+            padding: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+
+        .endpoint:last-child {
+            border-bottom: none;
+        }
+
+        .endpoint .path {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .warning-box h3 {
+            color: #c53030;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .warning-box p {
+            color: #742a2a;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: 0.5rem;
+        }
+
+        .badge.warning {
+            background: #e53e3e;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .info-card {
+                padding: 1.25rem;
+            }
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 0.85rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.12);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #2d49c3;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .nav ul {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .nav a:hover {
+            color: #764ba2;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+
+        .footer-brand {
+            margin-top: 0.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .farning-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+        }
+
+        .footer-logo-inline {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+            background: white;
+            border-radius: 4px;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .nav ul {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Environment Configuration</h1>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="https://farning.de" class="brand">
+                <img src="farning_logo.svg" alt="Farning Logo" class="brand-logo">
+                <span class="brand-text">Farning</span>
+            </a>
+
+            <ul>
+                <li><a href="#status">Status</a></li>
+                <li><a href="#endpoints">Endpoints</a></li>
+                <li><a href="#robots">robots.txt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="info-card" id="status">
+            <h2>System Status</h2>
+            <p>The application is running in <code>production</code> mode with the following configuration:</p>
+            
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <span class="path">Environment:</span> Production
+                </div>
+                <div class="endpoint">
+                    <span class="path">Database:</span> Connected (MySQL)
+                </div>
+                <div class="endpoint">
+                    <span class="path">Cache:</span> Redis (active)
+                </div>
+                <div class="endpoint">
+                    <span class="path">API Gateway:</span> Online
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card" id="endpoints">
+            <h2>API Endpoints</h2>
+            <p>The following endpoints are available:</p>
+            
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <span class="path">GET /api/status</span> - System health check
+                </div>
+                <div class="endpoint">
+                    <span class="path">GET /api/config</span> - Application configuration
+                </div>
+                <div class="endpoint">
+                    <span class="path">POST /api/auth</span> - Authentication endpoint
+                </div>
+                <div class="endpoint">
+                    <span class="path">GET /api/users</span> - User management
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3>Security Notice</h3>
+                <p>This is a production environment. All credentials and API keys are stored securely in environment variables. Configuration files are properly restricted from public access.</p>
+            </div>
+        </div>
+
+        <div class="info-card" id="robots">
+            <h2>robots.txt</h2>
+            <p>The <code>robots.txt</code> file tells search engines which pages to crawl:</p>
+            <div class="endpoint-list">
+                <div class="endpoint">
+                    <a href="/exposed-env/robots.txt" target="_blank" style="text-decoration: none;">
+                        <span class="path">/exposed-env/robots.txt</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="info-card">
+            <h2>Challenge Hint</h2>
+            <p>Check the <code>robots.txt</code> file for clues. Some configuration files might be exposed...</p>
+        </div> -->
+    </div>
+
+    <div class="footer">
+        <p>@ 2026 - Environment Configuration</p>
+
+        <p class="footer-brand">
+            Developed by
+            <a href="https://farning.de" class="farning-link">
+                <img src="farning_logo.svg" alt="Farning Logo" class="footer-logo-inline">
+                Farning
+            </a>
+        </p>
+    </div>
+</body>
+</html>
