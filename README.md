@@ -16,3 +16,9 @@ In AWS einfügen:
 
 To add the ssh-key again
 ssh-add ~/.ssh/farnhub_id_ed25519
+
+
+To restart the service on the Oracle instance
+sudo systemctl daemon-reload
+sudo systemctl restart ctfd
+sudo systemctl status ctfd
