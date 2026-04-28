@@ -219,7 +219,7 @@ const App: React.FC = () => {
               - Ticket: #LLM-42 <br />
               - Status: WiP <br />
               <br />
-              For now, use curl with <strong>http://192.168.178.200:3000/llm</strong> and the -d option for data
+              For now, use curl with <strong>http://ctf.farning.de:3000/llm</strong> and the -d option for the prompt
 
             </p>
             <button
