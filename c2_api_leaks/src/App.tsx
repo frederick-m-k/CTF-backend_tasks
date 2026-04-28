@@ -71,8 +71,8 @@ const App: React.FC = () => {
     // Definiert eine globale Variable im Window-Objekt
     (window as any).DEBUG_INFO = {
       apiKey: API_KEY,
-      baseApi: "https://polliniferous-brutally-gage.ngrok-free.dev/api/",
-      comment: "!!Remove before production"
+      baseApi: "http://ctf.farning.de:3000/api/",
+      comment: "Remove before production"
     };
 
     console.log("DEBUG_INFO gesetzt!");
