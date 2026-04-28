@@ -73,10 +73,10 @@ const App = () => {
 
   useEffect(() => {
     // Definiert eine globale Variable im Window-Objekt
-    (window as any).DEBUG_INFO = {
+    (window as any).CONFIG_INFO = {
       apiKey: API_KEY,
-      someApi: "https://polliniferous-brutally-gage.ngrok-free.dev//api/flag/c7/dummy",
-      comment: "!!Remove before production - Contains admin panel credentials"
+      someApi: "http://ctf.farning.de:3000/api/flag/c7/dummy",
+      comment: "Remove before production - Contains admin panel credentials"
     };
   }, []);
 

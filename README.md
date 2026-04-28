@@ -12,3 +12,7 @@ In AWS einfügen:
     Type:   CNAME
     Name:   ctf
     Target: b6ed9148-b54b-4ce4-b3cf-288784119b08.cfargotunnel.com
+
+
+To add the ssh-key again
+ssh-add ~/.ssh/farnhub_id_ed25519
