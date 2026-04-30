@@ -219,6 +219,28 @@ function writeSafeComment(comment) {
   }
 }
 
+function clearFile(filePath) {
+  try {
+    if (fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, ""); // leert die Datei
+      console.log(`[CLEANUP] Cleared file: ${filePath}`);
+    }
+  } catch (err) {
+    console.error(`[CLEANUP] Error clearing file ${filePath}:`, err);
+  }
+}
+
+function cleanupComments() {
+  console.log("[CLEANUP] Running cleanup...");
+
+  clearFile(COMMENTS_FILE);
+  clearFile(NEW_COMMENTS_FILE);
+  clearFile(SAFE_COMMENTS_FILE);
+}
+
+// alle 30 Minuten (30 * 60 * 1000 ms)
+setInterval(cleanupComments, 30 * 60 * 1000);
+
 // Get all safe comments (NO XSS detection)
 app.get('/api/safe/posts', (req, res) => {
   const comments = readSafeComments();
