@@ -144,6 +144,9 @@ app.get("/commentary", (req, res) => {
     
     res.sendFile(path.join(__dirname, "commentary/index.html"));
 });
+app.get("/commentary/favicon.svg", (req, res) => {
+  res.sendFile(path.join(__dirname, "c3_xss_exploit/dist/favicon.svg"));
+});
 function writeComment(comment) {
   try {
     fs.appendFileSync(COMMENTS_FILE, comment + '\n');
@@ -1673,6 +1676,6 @@ app.get("/api", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
+  console.log("Server running on port 3000");
 });
